@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="shortcut icon" href="/resources/icons/blood.ico" type="image/x-icon">
+  <!-- <link rel="stylesheet" href="/resources/styles/style.css"> -->
+  <title>Affiches Don de Sang 🩸 </title>
+
+  <style>
+    h1 {
+      margin: auto;
+      text-align: center;
+    }
+
+    .section-form {
+      width: 500px;
+      max-width: 100%;
+      margin: auto;
+      text-align: center;
+      border: 2px dotted #555;
+      border-radius: 32px;
+      padding: 16px;
+    }
+
+    .col-25 {
+      float: left;
+      width: 25%;
+      margin-top: 6px;
+    }
+
+    .col-75 {
+      float: left;
+      width: 75%;
+      margin-top: 6px;
+    }
+
+    /* Clear floats after the columns */
+    .row::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    label {
+      padding: 12px 12px 12px 0;
+      display: inline-block;
+    }
+
+    input[type=text] {
+      width: 100%;
+      padding: 9px 20px;
+      margin: 2px 0;
+      box-sizing: border-box;
+      border: 3px solid #ccc;
+      -webkit-transition: 0.5s;
+      transition: 0.5s;
+      outline: none;
+    }
+
+    input[type=text]:focus {
+      border: 3px solid #555;
+    }
+
+    .responsive-pane {
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .left-pane,
+    .right-pane {
+      margin: 10px;
+    }
+
+    img.cover-1,
+    img.cover-2,
+    img.cover-3,
+    #canvas-1,
+    #canvas-2,
+    #canvas-3 {
+      max-width: 380px;
+      object-fit: fill;
+      margin: auto;
+    }
+
+    button:hover {
+      cursor: pointer;
+      box-shadow: 0px 2px 8px 1px black;
+    }
+
+    button {
+      position: relative;
+      background-color: #04AA6D;
+      border: none;
+      /* font-size: 28px; */
+      color: #FFFFFF;
+      padding: 10px;
+      /* width: 200px; */
+      text-align: center;
+      -webkit-transition-duration: 0.4s;
+      /* Safari */
+      transition-duration: 0.4s;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    button:after {
+      content: "";
+      background: #cbcbcb;
+      display: block;
+      position: absolute;
+      padding-top: 300%;
+      padding-left: 350%;
+      margin-left: -20px !important;
+      margin-top: -120%;
+      opacity: 0;
+      transition: all 0.8s
+    }
+
+    button:active:after {
+      padding: 0;
+      margin: 0;
+      opacity: 1;
+      transition: 0s
+    }
+
+    button.reset-canvas {
+      background-color: #aa0404;
+    }
+
+    button.create-canvas {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: white;
+      border: 1px solid black;
+      background-color: #04AA6D;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+
+    button.save-file {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: white;
+      border: none;
+      background-color: rgb(28, 92, 156);
+      padding: 8px 16px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    button.save-file>img,
+    button.save-file>span {
+      vertical-align: middle;
+    }
+
+    @media screen and (max-width: 1000px) {
+      .responsive-pane {
+        display: block;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Générateur d'affiches pour le Don de sang</h1>
+  <section class="section-form">
+    <div class="row">
+      <!-- Date -->
+      <div class="col-25">
+        <label for="date">Date</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="date" name="date" required value="Samedi 14 Décembre" maxlength="32"
+          onkeyup="updateCountDate()">
+        <span id="countDate">0/32</span>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Time -->
+      <div class="col-25">
+        <label for="time">Horaires</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="time" name="time" required value="8h - 13h" maxlength="32" onkeyup="updateCountTime()">
+        <span id="countTime">0/32</span>
+      </div>
+    </div>
+    <div class="row">
+      <!-- City -->
+      <div class="col-25">
+        <label for="city">Ville</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="city" name="city" required value="Wasquehal" maxlength="40" onkeyup="updateCountCity()">
+        <span id="countCity">0/40</span>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Address name -->
+      <div class="col-25">
+        <label for="address-name">Nom du lieu</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="address-name" name="address-name" required value="Centre Victor Honoré" maxlength="40"
+          onkeyup="updateCountAddressName()">
+        <span id="countAddressName">0/40</span>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Address -->
+      <div class="col-25">
+        <label for="address">Adresse</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="address" name="address" required value="22 rue Louis Lejeune" maxlength="40"
+          onkeyup="updateCountaddress()">
+        <span id="countAddress">0/40</span>
+      </div>
+    </div>
+    <p>
+      <!-- Send -->
+      <button id="btn-generate" class="create-canvas" onclick="">Générer</button>
+      <button id="btn-reset" class="reset-canvas" onclick="">Reset</button>
+    </p>
+  </section>
+
+  <div class="responsive-pane">
+    <!-- Image source -->
+    <img class="cover-1" id="bg-model-1" src="./resources/poster-models/model-1.png" alt="model-1" style="display:none">
+
+    <div class="right-pane">
+      <h2>Affiche 1 (662 x 937), 385 Ko</h2>
+      <button id="dl-model-1" class="save-file" value="model-1" onclick="">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Modèle</span>
+      </button>
+      <button id="dl-canvas-1" class="save-file" onclick="downloadCanvas('canvas-1')">
+        <!-- <img src="./resources/images/download-circle-outline-custom.png" alt="icon-telecharger"> -->
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Résultat</span>
+      </button>
+      <br>
+      <!-- Canvas -->
+      <canvas id="canvas-1" width="662" height="937" style="border:1px solid grey;"></canvas>
+    </div>
+
+    <!-- Image source -->
+    <img class="cover-2" id="bg-model-2" src="./resources/poster-models/model-2.png" alt="model-2" style="display:none">
+
+    <div class="right-pane">
+      <h2>Affiche 2 (662 x 937), 434 Ko</h2>
+      <button id="dl-model-2" class="save-file" value="model-2" onclick="">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Modèle</span>
+      </button>
+      <button id="dl-canvas-2" class="save-file" onclick="downloadCanvas('canvas-2')">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Résultat</span>
+      </button>
+      <br>
+      <!-- Canvas -->
+      <canvas id="canvas-2" width="662" height="937" style="border:1px solid grey;"></canvas>
+    </div>
+    <!-- Image source -->
+    <img class="model-3" id="bg-model-3" src="./resources/poster-models/model-3.png" alt="model-3" style="display:none">
+
+    <div class="right-pane">
+      <h2>Affiche 3 (682 x 960), 499 Ko</h2>
+      <button id="dl-model-3" class="save-file" value="model-3" onclick="">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Modèle</span>
+      </button>
+      <button id="dl-canvas-3" class="save-file" onclick="downloadCanvas('canvas-3')">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Résultat</span>
+      </button>
+      <br>
+      <!-- Canvas -->
+      <canvas id="canvas-3" width="682" height="960" style="border:1px solid grey;"></canvas>
+    </div>
+  </div>
+
+  <!-- <script type="text/javascript"> -->
+  <script>
+    // draw canvas 1
+    // define canvas properties
+    const canvas1 = document.getElementById("canvas-1");
+    const ctx1 = canvas1.getContext("2d");
+    canvas1.width = 662;
+    canvas1.height = 937;
+    const x = canvas1.width / 2;
+    const posY = 480
+    ctx1.textBaseline = 'middle';
+    ctx1.textAlign = "center";
+    ctx1.fillStyle = "rgba(0, 54, 114, 1)"
+    const fontDate = "bold 54px Arial";
+    const fontTime = "bold 34px Arial";
+    const fontCity = "bold 48px Arial";
+    const fontAlt = "bold 25px Arial";
+
+    function drawCanvas1() {
+      // get canvas
+      var c = document.getElementById("canvas-1");
+      var ctx = c.getContext("2d");
+
+      var img = document.getElementById("bg-model-1");
+      ctx.drawImage(img, 0, 0);
+
+      // get inputs values
+      var myDate = document.getElementById("date").value.trim();
+      var myTime = document.getElementById("time").value.trim();
+      var myCity = document.getElementById("city").value.trim();
+      var myAddressName = document.getElementById("address-name").value.trim();
+      var myAddress = document.getElementById("address").value.trim();
+
+      // fill canvas
+      ctx.font = fontDate;
+      ctx.fillText(myDate, x, posY);
+      ctx.font = fontTime;
+      ctx.fillText(myTime, x, posY + 50);
+      ctx.font = fontCity;
+      ctx.fillText(myCity, x, posY + 140);
+      ctx.font = fontAlt;
+      ctx.fillText(myAddressName, x, posY + 180);
+      ctx.fillText(myAddress, x, posY + 210);
+    }
+
+    // draw canvas 2
+    // define canvas properties
+    const canvas2 = document.getElementById("canvas-2");
+    const ctx2 = canvas2.getContext("2d");
+    canvas2.width = 662;
+    canvas2.height = 937;
+    const x2 = canvas2.width / 2;
+    const posY2 = 650
+    ctx2.textBaseline = 'middle';
+    ctx2.textAlign = "center";
+    ctx2.fillStyle = "rgba(0, 54, 114, 1)"
+    const fontDate2 = "bold 42px Arial";
+    const fontTime2 = "bold 28px Arial";
+    const fontCity2 = "bold 40px Arial";
+    const fontAlt2 = "bold 20px Arial";
+
+    function drawCanvas2() {
+      // get canvas
+      var c = document.getElementById("canvas-2");
+      var ctx2 = c.getContext("2d");
+
+      var img = document.getElementById("bg-model-2");
+      ctx2.drawImage(img, 0, 0);
+
+      // get inputs values
+      var myDate = document.getElementById("date").value.trim();
+      var myTime = document.getElementById("time").value.trim();
+      var myCity = document.getElementById("city").value.trim();
+      var myAddressName = document.getElementById("address-name").value.trim();
+      var myAddress = document.getElementById("address").value.trim();
+
+      // fill canvas2
+      ctx2.font = fontDate2;
+      ctx2.fillText(myDate, x2, posY2);
+      ctx2.font = fontTime2;
+      ctx2.fillText(myTime, x2, posY2 + 50);
+      ctx2.font = fontCity2;
+      ctx2.fillText(myCity, x2, posY2 + 110);
+      ctx2.font = fontAlt2;
+      ctx2.fillText(myAddressName, x2, posY2 + 150);
+      ctx2.fillText(myAddress, x2, posY2 + 170);
+    }
+
+    // draw canvas 3
+    // define canvas properties
+    const canvas3 = document.getElementById("canvas-3");
+    const ctx3 = canvas3.getContext("2d");
+    canvas3.width = 682;
+    canvas3.height = 960;
+    const x3 = canvas3.width / 2;
+    const posY3 = canvas3.height / 2;
+    ctx3.textBaseline = 'middle';
+    ctx3.textAlign = "center";
+    ctx3.fillStyle = "rgba(0, 54, 114, 1)"
+    const fontDate3 = "bold 58px Arial";
+    const fontTime3 = "bold 40px Arial";
+    const fontCity3 = "bold 50px Arial";
+    const fontAlt3 = "bold 30px Arial";
+
+    function drawCanvas3() {
+      // get canvas
+      var c = document.getElementById("canvas-3");
+      var ctx = c.getContext("2d");
+
+      var img = document.getElementById("bg-model-3");
+      ctx.drawImage(img, 0, 0);
+
+      // get inputs values
+      var myDate = document.getElementById("date").value.trim();
+      var myTime = document.getElementById("time").value.trim();
+      var myCity = document.getElementById("city").value.trim();
+      var myAddressName = document.getElementById("address-name").value.trim();
+      var myAddress = document.getElementById("address").value.trim();
+
+      // fill canvas2
+      ctx.font = fontDate3;
+      ctx.fillText(myDate, x3, posY3);
+      ctx.font = fontTime3;
+      ctx.fillText(myTime, x3, posY3 + 60);
+      ctx.font = fontCity3;
+      ctx.fillText(myCity, x3, posY3 + 140);
+      ctx.font = fontAlt3;
+      ctx.fillText(myAddressName, x3, posY3 + 180);
+      ctx.fillText(myAddress, x3, posY3 + 210);
+    }
+
+    const drawAll = () => {
+      drawCanvas1();
+      drawCanvas2();
+      drawCanvas3();
+    }
+
+    function resetCanvas() {
+      var c1 = document.getElementById("canvas-1");
+      var c2 = document.getElementById("canvas-2");
+      var c3 = document.getElementById("canvas-3");
+      var ctx1 = c1.getContext("2d");
+      var ctx2 = c2.getContext("2d");
+      var ctx3 = c3.getContext("2d");
+      var img1 = document.getElementById("bg-model-1");
+      var img2 = document.getElementById("bg-model-2");
+      var img3 = document.getElementById("bg-model-3");
+      ctx1.drawImage(img1, 0, 0);
+      ctx2.drawImage(img2, 0, 0);
+      ctx3.drawImage(img3, 0, 0);
+    }
+
+    // Generate and Reset buttons
+    const btnGenerate = document.querySelector('#btn-generate');
+    btnGenerate.addEventListener('click', drawAll)
+    const btnReset = document.querySelector('#btn-reset')
+    btnReset.addEventListener('click', resetCanvas)
+
+    // Count inputs' lengths
+    const updateCountDate = () => {
+      var v = document.getElementById("date").value;
+      document.getElementById("countDate").innerHTML = v.length + "/32";
+    }
+    const updateCountTime = () => {
+      var v = document.getElementById("time").value;
+      document.getElementById("countTime").innerHTML = v.length + "/32";
+    }
+    const updateCountCity = () => {
+      var v = document.getElementById("city").value;
+      document.getElementById("countCity").innerHTML = v.length + "/40";
+    }
+    const updateCountAddressName = () => {
+      var v = document.getElementById("address-name").value;
+      document.getElementById("countAddressName").innerHTML = v.length + "/40";
+    }
+    const updateCountaddress = () => {
+      var v = document.getElementById("address").value;
+      document.getElementById("countAddress").innerHTML = v.length + "/40";
+    }
+
+    // Initialize on load
+    resetCanvas();
+    updateCountDate();
+    updateCountTime();
+    updateCountCity();
+    updateCountAddressName();
+    updateCountaddress();
+
+    // Download files
+    function getFileName(canvasName) {
+      var myDate = document.getElementById("date").value.replaceAll(" ", "-");
+      var myCity = document.getElementById("city").value;
+      var filename = "affiche-" + canvasName + "-" + myCity + "-" + myDate
+      filename = filename + ".png"
+      return filename
+    }
+
+    function downloadModel(value) {
+      var link = document.createElement("a");
+      link.href = "./resources/poster-models/" + value + ".png"
+      link.download = value + ".png"
+      link.click();
+    }
+
+    const model1 = document.querySelector('#dl-model-1');
+    const model2 = document.querySelector('#dl-model-2');
+    const model3 = document.querySelector('#dl-model-3');
+    model1.addEventListener('click', (value) => {
+      downloadModel(value.currentTarget.value)
+    });
+    model2.addEventListener('click', (value) => {
+      downloadModel(value.currentTarget.value)
+    });
+    model3.addEventListener('click', (value) => {
+      downloadModel(value.currentTarget.value)
+    });
+
+    function downloadCanvas(canvasName) {
+      var c = document.getElementById(canvasName);
+      var link = document.createElement("a");
+      link.href = c.toDataURL("image/png");
+      link.download = getFileName(canvasName)
+      link.click();
+    }
+
+  </script>
+</body>
+
+</html>
