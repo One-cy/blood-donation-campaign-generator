@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link rel="shortcut icon" href="/resources/icons/blood.ico" type="image/x-icon">
   <!-- <link rel="stylesheet" href="/resources/styles/style.css"> -->
-  <title>Affiches Don de Sang 🩸 </title>
+  <title>🩸 Affiches Don de Sang 🩸 </title>
 
   <style>
     h1 {
@@ -63,11 +63,13 @@
     }
 
     .responsive-pane {
-      width: 100%;
-      max-width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      /* width: 100%; */
+      /* max-width: 100%; */
+      margin: auto;
+      display: block;
+      /* align-items: center; */
+      /* justify-content: center; */
+      text-align: center;
     }
 
     .left-pane,
@@ -75,13 +77,15 @@
       margin: 10px;
     }
 
+    img.cover,
     img.cover-1,
     img.cover-2,
     img.cover-3,
     #canvas-1,
     #canvas-2,
-    #canvas-3 {
-      max-width: 380px;
+    #canvas-3,
+    #canvas-4 {
+      /* max-width: 380px; */
       object-fit: fill;
       margin: auto;
     }
@@ -234,18 +238,37 @@
 
   <div class="responsive-pane">
     <!-- Image source -->
+    <img class="cover" id="facebook-model" src="./resources/poster-models/facebook-poster.png" alt=""
+      style="display:none">
+
+    <div class="right-pane">
+      <h2>Affiche réseaux sociaux (560 x 398), 8,41 Ko</h2>
+      <button id="dl-facebook-model" class="save-file" value="facebook-model" onclick="">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Modèle </span>
+      </button>
+      <button id="dl-canvas-4" class="save-file" onclick="downloadCanvas('canvas-4')">
+        <img src="./resources/images/file_download_white_24dp.svg" alt="download">
+        <span> Résultat </span>
+      </button>
+      <br>
+      <!-- Canvas -->
+      <canvas id="canvas-4" width="560" height="398" style="border:1px solid grey;"></canvas>
+    </div>
+
+    <!-- Image source -->
     <img class="cover-1" id="bg-model-1" src="./resources/poster-models/model-1.png" alt="model-1" style="display:none">
 
     <div class="right-pane">
       <h2>Affiche 1 (662 x 937), 385 Ko</h2>
       <button id="dl-model-1" class="save-file" value="model-1" onclick="">
         <img src="./resources/images/file_download_white_24dp.svg" alt="download">
-        <span> Modèle</span>
+        <span> Modèle </span>
       </button>
       <button id="dl-canvas-1" class="save-file" onclick="downloadCanvas('canvas-1')">
         <!-- <img src="./resources/images/download-circle-outline-custom.png" alt="icon-telecharger"> -->
         <img src="./resources/images/file_download_white_24dp.svg" alt="download">
-        <span> Résultat</span>
+        <span> Résultat </span>
       </button>
       <br>
       <!-- Canvas -->
@@ -253,7 +276,7 @@
     </div>
 
     <!-- Image source -->
-    <img class="cover-2" id="bg-model-2" src="./resources/poster-models/model-2.png" alt="model-2" style="display:none">
+    <img class="cover-2" id="bg-model-2" src="./resources/poster-models/model-2.png" alt="" style="display:none">
 
     <div class="right-pane">
       <h2>Affiche 2 (662 x 937), 434 Ko</h2>
@@ -270,7 +293,7 @@
       <canvas id="canvas-2" width="662" height="937" style="border:1px solid grey;"></canvas>
     </div>
     <!-- Image source -->
-    <img class="model-3" id="bg-model-3" src="./resources/poster-models/model-3.png" alt="model-3" style="display:none">
+    <img class="model-3" id="bg-model-3" src="./resources/poster-models/model-3.png" alt="" style="display:none">
 
     <div class="right-pane">
       <h2>Affiche 3 (682 x 960), 499 Ko</h2>
@@ -419,25 +442,75 @@
       ctx.fillText(myAddress, x3, posY3 + 210);
     }
 
+    // draw canvas 4
+    const canvas4 = document.getElementById("canvas-4");
+    const ctx4 = canvas4.getContext("2d");
+    canvas4.width = 560;
+    canvas4.height = 398;
+    const posX4 = canvas4.width / 2;
+    const posY4 = canvas4.height / 2;
+    ctx4.textBaseline = 'middle';
+    ctx4.textAlign = "center";
+    ctx4.fillStyle = "rgba(255, 255, 255, 1)"
+    const fontDate4 = "bold 44px Arial";
+    const fontTime4 = "bold 40px Arial";
+    const fontCity4 = "bold 32px Arial";
+    const fontAlt4 = "bold 26px Arial";
+
+    function drawCanvas4() {
+      // get canvas
+      var c = document.getElementById("canvas-4");
+      var ctx = c.getContext("2d");
+
+      var img = document.getElementById("facebook-model");
+      ctx.drawImage(img, 0, 0);
+
+      // get inputs values
+      var myDate = document.getElementById("date").value.trim();
+      var myTime = document.getElementById("time").value.trim();
+      var myCity = document.getElementById("city").value.trim();
+      var myAddressName = document.getElementById("address-name").value.trim();
+      var myAddress = document.getElementById("address").value.trim();
+
+      // fill canvas
+      ctx.font = fontDate4;
+      ctx.fillText(myDate, posX4, posY4-70);
+      ctx.font = fontTime4;
+      ctx.fillText(myTime, posX4, posY4-20);
+      ctx.font = fontCity4;
+      ctx.fillText(myCity, posX4, posY4 + 55);
+      ctx.font = fontAlt4;
+      ctx.fillText(myAddressName, posX4, posY4 + 90);
+      ctx.fillText(myAddress, posX4, posY4 + 120);
+    }
+
     const drawAll = () => {
       drawCanvas1();
       drawCanvas2();
       drawCanvas3();
+      drawCanvas4();
     }
 
     function resetCanvas() {
       var c1 = document.getElementById("canvas-1");
-      var c2 = document.getElementById("canvas-2");
-      var c3 = document.getElementById("canvas-3");
       var ctx1 = c1.getContext("2d");
-      var ctx2 = c2.getContext("2d");
-      var ctx3 = c3.getContext("2d");
       var img1 = document.getElementById("bg-model-1");
-      var img2 = document.getElementById("bg-model-2");
-      var img3 = document.getElementById("bg-model-3");
       ctx1.drawImage(img1, 0, 0);
+
+      var c2 = document.getElementById("canvas-2");
+      var ctx2 = c2.getContext("2d");
+      var img2 = document.getElementById("bg-model-2");
       ctx2.drawImage(img2, 0, 0);
+
+      var c3 = document.getElementById("canvas-3");
+      var ctx3 = c3.getContext("2d");
+      var img3 = document.getElementById("bg-model-3");
       ctx3.drawImage(img3, 0, 0);
+
+      var c4 = document.getElementById("canvas-4");
+      var ctx4 = c4.getContext("2d");
+      var img4 = document.getElementById("facebook-model");
+      ctx4.drawImage(img4, 0, 0);
     }
 
     // Generate and Reset buttons
@@ -495,6 +568,7 @@
     const model1 = document.querySelector('#dl-model-1');
     const model2 = document.querySelector('#dl-model-2');
     const model3 = document.querySelector('#dl-model-3');
+    const model4 = document.querySelector('#dl-facebook-model');
     model1.addEventListener('click', (value) => {
       downloadModel(value.currentTarget.value)
     });
@@ -503,6 +577,9 @@
     });
     model3.addEventListener('click', (value) => {
       downloadModel(value.currentTarget.value)
+    });
+    model4.addEventListener('click', (value) => {
+      downloadModel('facebook-poster')
     });
 
     function downloadCanvas(canvasName) {
