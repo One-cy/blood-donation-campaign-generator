@@ -84,7 +84,7 @@
     #canvas-1,
     #canvas-2,
     #canvas-3,
-    #canvas-4 {
+    #facebook-poster {
       /* max-width: 380px; */
       object-fit: fill;
       margin: auto;
@@ -242,18 +242,18 @@
       style="display:none">
 
     <div class="right-pane">
-      <h2>Affiche réseaux sociaux (560 x 398), 8,41 Ko</h2>
+      <h2>Affiche réseaux sociaux (1124 x 795), 67.9 Koo</h2>
       <button id="dl-facebook-model" class="save-file" value="facebook-model" onclick="">
         <img src="./resources/images/file_download_white_24dp.svg" alt="download">
         <span> Modèle </span>
       </button>
-      <button id="dl-canvas-4" class="save-file" onclick="downloadCanvas('canvas-4')">
+      <button id="dl-facebook-poster" class="save-file" onclick="downloadCanvas('facebook-poster')">
         <img src="./resources/images/file_download_white_24dp.svg" alt="download">
         <span> Résultat </span>
       </button>
       <br>
       <!-- Canvas -->
-      <canvas id="canvas-4" width="560" height="398" style="border:1px solid grey;"></canvas>
+      <canvas id="facebook-poster" width="1124" height="795" style="border:1px solid grey;"></canvas>
     </div>
 
     <!-- Image source -->
@@ -443,23 +443,23 @@
     }
 
     // draw canvas 4
-    const canvas4 = document.getElementById("canvas-4");
+    const canvas4 = document.getElementById("facebook-poster");
     const ctx4 = canvas4.getContext("2d");
-    canvas4.width = 560;
-    canvas4.height = 398;
+    canvas4.width = 1124;
+    canvas4.height = 795;
     const posX4 = canvas4.width / 2;
     const posY4 = canvas4.height / 2;
     ctx4.textBaseline = 'middle';
     ctx4.textAlign = "center";
     ctx4.fillStyle = "rgba(255, 255, 255, 1)"
-    const fontDate4 = "bold 44px Arial";
-    const fontTime4 = "bold 40px Arial";
-    const fontCity4 = "bold 32px Arial";
-    const fontAlt4 = "bold 26px Arial";
+    const fontDate4 = "bold 70px Arial";
+    const fontTime4 = "bold 50px Arial";
+    const fontCity4 = "bold 40px Arial";
+    const fontAlt4 = "bold 32px Arial";
 
-    function drawCanvas4() {
+    function drawCanvasFacebook() {
       // get canvas
-      var c = document.getElementById("canvas-4");
+      var c = document.getElementById("facebook-poster");
       var ctx = c.getContext("2d");
 
       var img = document.getElementById("facebook-model");
@@ -476,19 +476,19 @@
       ctx.font = fontDate4;
       ctx.fillText(myDate, posX4, posY4-70);
       ctx.font = fontTime4;
-      ctx.fillText(myTime, posX4, posY4-20);
+      ctx.fillText(myTime, posX4, posY4);
       ctx.font = fontCity4;
-      ctx.fillText(myCity, posX4, posY4 + 55);
+      ctx.fillText(myCity, posX4, posY4 + 100);
       ctx.font = fontAlt4;
-      ctx.fillText(myAddressName, posX4, posY4 + 90);
-      ctx.fillText(myAddress, posX4, posY4 + 120);
+      ctx.fillText(myAddressName, posX4, posY4 + 150);
+      ctx.fillText(myAddress, posX4, posY4 + 200);
     }
 
     const drawAll = () => {
       drawCanvas1();
       drawCanvas2();
       drawCanvas3();
-      drawCanvas4();
+      drawCanvasFacebook();
     }
 
     function resetCanvas() {
@@ -507,7 +507,7 @@
       var img3 = document.getElementById("bg-model-3");
       ctx3.drawImage(img3, 0, 0);
 
-      var c4 = document.getElementById("canvas-4");
+      var c4 = document.getElementById("facebook-poster");
       var ctx4 = c4.getContext("2d");
       var img4 = document.getElementById("facebook-model");
       ctx4.drawImage(img4, 0, 0);
